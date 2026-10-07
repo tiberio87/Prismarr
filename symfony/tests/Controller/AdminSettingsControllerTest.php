@@ -564,6 +564,42 @@ class AdminSettingsControllerTest extends TestCase
         $this->assertSame(302, $response->getStatusCode());
     }
 
+    public function testLanguagesSaveAcceptsItalianMetadata(): void
+    {
+        $settings = $this->createMock(SettingRepository::class);
+        $settings->expects($this->once())->method('set')->with('display_metadata_language', 'it-IT');
+        $request = Request::create('/admin/settings/languages/save', 'POST', [
+            '_csrf_token' => 'valid',
+            'prismarr_metadata' => 'it-IT',
+        ]);
+
+        $response = $this->controller(
+            $settings,
+            $this->createMock(ConfigService::class),
+            $this->createMock(HealthService::class),
+        )->languagesSave($request);
+
+        $this->assertSame(302, $response->getStatusCode());
+    }
+
+    public function testLanguagesSaveRejectsUnknownMetadataLocale(): void
+    {
+        $settings = $this->createMock(SettingRepository::class);
+        $settings->expects($this->never())->method('set');
+        $request = Request::create('/admin/settings/languages/save', 'POST', [
+            '_csrf_token' => 'valid',
+            'prismarr_metadata' => 'xx-XX',
+        ]);
+
+        $response = $this->controller(
+            $settings,
+            $this->createMock(ConfigService::class),
+            $this->createMock(HealthService::class),
+        )->languagesSave($request);
+
+        $this->assertSame(302, $response->getStatusCode());
+    }
+
     public function testTestEndpointSwallowsExceptionsWithoutLeakingDetails(): void
     {
         // Security: the health check throwing must NOT propagate the exception

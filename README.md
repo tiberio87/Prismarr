@@ -116,7 +116,7 @@ queued for later.
 - **Discovery:** TMDb landing page with recommendations and trending, watchlist, an explorer with filters, and deep-links into your library.
 - **Plex activity (Tautulli):** optional read-only page (now playing, watch stats, graphs, history) plus a "Current Plex activity" dashboard widget. The API key stays server-side and responses are sanitised.
 - **Theming:** a full instance theme chosen in `/admin/settings → Display` from a catalogue of glance-style presets (HSL colour model resolved to CSS variables server-side, light and dark). The default reproduces the previous dark look exactly.
-- **Preferences:** accent colour, UI density, timezone, date format, English / French / Italian UI, settings export / import (credentials always stripped).
+- **Preferences:** accent colour, UI density, timezone, date format, English / French / Italian UI and TMDb metadata language, settings export / import (credentials always stripped).
 - **Security:** Symfony auth with login rate-limiter, non-root container, dynamic CSP, SSRF protection on user-provided URLs, CSRF on every mutation.
 
 ---

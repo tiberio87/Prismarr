@@ -668,7 +668,7 @@ class AdminSettingsController extends AbstractController
             $this->settings->set('display_language', $prismarrUi);
             $changed = true;
         }
-        if ($prismarrMeta !== '' && in_array($prismarrMeta, ['fr-FR', 'en-US'], true)) {
+        if ($prismarrMeta !== '' && in_array($prismarrMeta, ['fr-FR', 'en-US', 'it-IT'], true)) {
             $this->settings->set('display_metadata_language', $prismarrMeta);
             $changed = true;
         }
