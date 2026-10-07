@@ -531,6 +531,39 @@ class AdminSettingsControllerTest extends TestCase
         $this->assertSame(302, $response->getStatusCode());
     }
 
+    public function testLanguagesSaveAcceptsItalian(): void
+    {
+        $settings = $this->createMock(SettingRepository::class);
+        $settings->expects($this->once())->method('set')->with('display_language', 'it');
+        $config = $this->createMock(ConfigService::class);
+        $request = Request::create('/admin/settings/languages/save', 'POST', [
+            '_csrf_token' => 'valid',
+            'prismarr_ui' => 'it',
+        ]);
+
+        $response = $this->controller($settings, $config, $this->createMock(HealthService::class))
+            ->languagesSave($request);
+
+        $this->assertSame(302, $response->getStatusCode());
+    }
+
+    public function testLanguagesSaveRejectsUnknownLocale(): void
+    {
+        $settings = $this->createMock(SettingRepository::class);
+        $settings->expects($this->never())->method('set');
+        $config = $this->createMock(ConfigService::class);
+        $config->expects($this->never())->method('invalidate');
+        $request = Request::create('/admin/settings/languages/save', 'POST', [
+            '_csrf_token' => 'valid',
+            'prismarr_ui' => 'zz',
+        ]);
+
+        $response = $this->controller($settings, $config, $this->createMock(HealthService::class))
+            ->languagesSave($request);
+
+        $this->assertSame(302, $response->getStatusCode());
+    }
+
     public function testTestEndpointSwallowsExceptionsWithoutLeakingDetails(): void
     {
         // Security: the health check throwing must NOT propagate the exception

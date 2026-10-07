@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Dashboard\DashboardSections;
 use App\Entity\ServiceInstance;
+use App\EventSubscriber\LocaleSubscriber;
 use App\Repository\SettingRepository;
 use App\Repository\UserRepository;
 use App\Service\ConfigService;
@@ -330,6 +331,7 @@ class AdminSettingsController extends AbstractController
             'options' => [
                 'fr' => 'admin.display.language.options.fr',
                 'en' => 'admin.display.language.options.en',
+                'it' => 'admin.display.language.options.it',
             ],
             'help' => 'admin.display.language.help',
         ],
@@ -662,7 +664,7 @@ class AdminSettingsController extends AbstractController
         $prismarrUi   = (string) ($payload['prismarr_ui'] ?? '');
         $prismarrMeta = (string) ($payload['prismarr_metadata'] ?? '');
 
-        if ($prismarrUi !== '' && in_array($prismarrUi, ['fr', 'en'], true)) {
+        if ($prismarrUi !== '' && in_array($prismarrUi, LocaleSubscriber::SUPPORTED, true)) {
             $this->settings->set('display_language', $prismarrUi);
             $changed = true;
         }
